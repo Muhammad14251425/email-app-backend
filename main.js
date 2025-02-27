@@ -31,7 +31,7 @@ const BATCH_SIZE = 100
 async function sendBatch(transporter, emailData, batch) {
     try {
         const info = await transporter.sendMail({
-            from: process.env.GOOGLE_USER_EMAIL,
+            from: "3ulogisticwebsite@gmail.com",
             bcc: batch.join(", "),
             subject: emailData.subject,
             html: emailData.content,
@@ -52,8 +52,6 @@ async function sendBatch(transporter, emailData, batch) {
 app.post("/send-email", async (req, res) => {
     const { emailData, tokens } = req.body
     console.log("Called")
-    console.log(emailData)
-    console.log(tokens)
     let transporter
     try {
         transporter = await getGmailTransporter({
@@ -129,5 +127,9 @@ app.post("/send-email", async (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
+})
+
+app.get("/", (req, res) => {
+    res.send("Working")
 })
 
