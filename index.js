@@ -30,6 +30,10 @@ app.listen(port, () => {
 // Initialize WhatsApp Client
 client.initialize();
 
+app.get("/", (req, res) => {
+    res.json({ message: "Working" })
+})
+
 // API to send WhatsApp message
 app.post("/send-message", async (req, res) => {
     let { number, message } = req.body;
@@ -108,7 +112,7 @@ app.post("/send-base64-image", async (req, res) => {
     }
 });
 
-app.post("/send-multiple-messages-with-text-message",async(req,res) =>{
+app.post("/send-multiple-messages-with-text-message", async (req, res) => {
     let { number, message, imageUrls } = req.body;
 
     if (!number || !message || !Array.isArray(imageUrls) || imageUrls.length === 0) {
