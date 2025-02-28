@@ -1,0 +1,6 @@
+2025/02/28-07:34:12.723 6adc Reusing MANIFEST C:\Users\Muhammad Fawwad\Documents\work\emailapp backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/02/28-07:34:12.724 6adc Recovering log #48
+2025/02/28-07:34:12.765 6adc Reusing old log C:\Users\Muhammad Fawwad\Documents\work\emailapp backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000048.log 
+2025/02/28-07:34:12.766 6adc Delete type=2 #44
+2025/02/28-07:34:12.766 6adc Delete type=2 #50
+2025/02/28-07:34:14.918 6318 Manual compaction at level-0 from '\x00\x1c\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x1d\x00\x00\x00' @ 0 : 0; will stop at (end)
