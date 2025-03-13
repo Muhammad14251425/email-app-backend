@@ -79,9 +79,17 @@ app.post("/send-message", async (req, res) => {
         return res.status(400).json({ error: "Number and message are required" });
     }
 
-    // Convert Pakistani number format (03001234567 → 923001234567)
+    // Ensure number is a string
+    number = String(number);
+
+    // Convert Pakistani number format (e.g., 03001234567 → 923001234567)
     if (number.startsWith("0")) {
         number = "92" + number.substring(1);
+    }
+
+    // Ensure the number is in the correct format
+    if (!/^\d{12}$/.test(number)) {
+        return res.status(400).json({ error: "Invalid phone number format" });
     }
 
     const chatId = `${number}@c.us`;
@@ -91,9 +99,45 @@ app.post("/send-message", async (req, res) => {
         res.status(200).json({ success: true, message: "Message sent successfully!" });
     } catch (error) {
         console.error("Error sending message:", error);
-        res.status(500).json({ error: "Failed to send message" });
+        res.status(500).json({ error: "Failed to send message", details: error.message });
     }
 });
+
+
+app.post("/check-number", async (req, res) => {
+    let { number } = req.body;
+
+    if (!number) {
+        return res.status(400).json({ error: "Phone number is required" });
+    }
+
+    // Convert Pakistani number format (0345 → 92345)
+    if (number.startsWith("0")) {
+        number = "92" + number.substring(1);
+    }
+
+    if (!/^\d{12}$/.test(number)) {
+        return res.status(400).json({ error: "Invalid phone number format" });
+    }
+
+    const chatId = `${number}@c.us`;
+
+    try {
+        const isRegistered = await client.isRegisteredUser(chatId);
+
+        res.status(200).json({
+            success: true,
+            isRegistered,
+            message: isRegistered
+                ? "Number is registered on WhatsApp"
+                : "Number is not on WhatsApp",
+        });
+    } catch (error) {
+        console.error("Error checking number:", error);
+        res.status(500).json({ error: "Failed to check WhatsApp registration" });
+    }
+});
+
 
 app.post("/send-image", async (req, res) => {
     let { number, message, imageUrl } = req.body;
