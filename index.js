@@ -4,12 +4,14 @@ const { Client, LocalAuth, MessageMedia } = pkg;
 import qrcode from "qrcode-terminal"
 
 const app = express();
-const port = 3001;
+const port = 3002;
 
 // Initialize WhatsApp Web Client
 const client = new Client({
     authStrategy: new LocalAuth(),
 });
+
+let isClientReady = false;
 
 client.on("qr", (qr) => {
     console.log("Scan this QR code to log in:");
@@ -18,6 +20,19 @@ client.on("qr", (qr) => {
 
 client.on("ready", () => {
     console.log("WhatsApp Web Client is ready!");
+    isClientReady = true;
+});
+
+client.on("disconnected", (reason) => {
+    console.log("WhatsApp disconnected:", reason);
+    isClientReady = false;
+    reconnectWhatsApp();
+});
+
+client.on("auth_failure", (msg) => {
+    console.error("Auth failure:", msg);
+    isClientReady = false;
+    reconnectWhatsApp();
 });
 
 app.use(express.json());
@@ -33,6 +48,28 @@ client.initialize();
 app.get("/", (req, res) => {
     res.json({ message: "Working" })
 })
+
+
+const reconnectWhatsApp = () => {
+    console.log("Reconnecting...");
+    client.destroy().then(() => {
+        client.initialize();
+    });
+};
+
+
+app.get("/chats", async (req, res) => {
+    if (!isClientReady) {
+        return res.status(500).json({ error: "WhatsApp client is not ready" });
+    }
+
+    try {
+        const chats = await client.getChats();
+        res.json({ chats });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch chats", details: error.message });
+    }
+});
 
 // API to send WhatsApp message
 app.post("/send-message", async (req, res) => {
