@@ -4,7 +4,7 @@ const { Client, LocalAuth, MessageMedia } = pkg;
 import qrcode from "qrcode-terminal"
 
 const app = express();
-const port = 3002;
+const port = 8080;
 
 // Initialize WhatsApp Web Client
 const client = new Client({
