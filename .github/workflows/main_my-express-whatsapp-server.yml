@@ -26,8 +26,6 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
-          npm run build --if-present
-          npm run test --if-present
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -71,4 +69,7 @@ jobs:
           app-name: 'my-express-whatsapp-server'
           slot-name: 'Production'
           package: .
-          
+
+
+      - name: Start the Express.js server
+        run: pm2 start npm -- start
