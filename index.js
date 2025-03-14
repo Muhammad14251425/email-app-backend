@@ -2,6 +2,7 @@ import express from "express"
 import pkg from "whatsapp-web.js";
 const { Client, LocalAuth, MessageMedia } = pkg;
 import qrcode from "qrcode-terminal"
+import puppeteer from "puppeteer";
 
 const app = express();
 const port = 8080;
@@ -9,6 +10,10 @@ const port = 8080;
 // Initialize WhatsApp Web Client
 const client = new Client({
     authStrategy: new LocalAuth(),
+    puppeteer: {
+        executablePath: process.env.CHROME_BIN || "/usr/bin/google-chrome",
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    },
 });
 
 let isClientReady = false;
