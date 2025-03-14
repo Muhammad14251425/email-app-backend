@@ -69,7 +69,3 @@ jobs:
           app-name: 'my-express-whatsapp-server'
           slot-name: 'Production'
           package: .
-
-
-      - name: Start the Express.js server
-        run: pm2 start npm -- start
