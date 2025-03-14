@@ -34,7 +34,8 @@ jobs:
             libgbm1 \
             libpango-1.0-0 \
             libx11-xcb1 \
-            libgtk-3-0
+            libgtk-3-0 \
+            libgobject-2.0-0
 
       - name: npm install, build, and test
         run: |
